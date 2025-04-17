@@ -1,67 +1,29 @@
+
 class Solution {
-    class Node{
-        Node left;
-        Node right;
-        int val;
-        int count;
-        Node(int v,int c){
-            val=v;
-            count=c;
-            left=null;
-            right=null;
+    public int[] topKFrequent(int[] nums, int k) {
+        HashMap<Integer, Integer> freqMap = new HashMap<>();
+
+        for (int num : nums) {
+            freqMap.put(num, freqMap.getOrDefault(num, 0) + 1);
         }
-        Node(){}
-    }
-    public int[] topKFrequent(int[] nums, int key) {
-        HashMap<Integer, Integer> map=new HashMap<>();
-        for(int i=0;i<nums.length;i++){
-            map.put(nums[i],map.getOrDefault(nums[i],0)+1);
-        }
-        Node root=new Node();
-        int c=0;
-        for(int k:map.keySet()){
-            if(c==0){
-                root.val=k;
-                root.count=map.get(k);
-            }
-            else{
-                Node temp=new Node(k,map.get(k));
-               root= insertBetween(root,temp);
-            }
-            c++;
-        }
-        int[] ans=new int[key];
-        for(int i=0;i<key;i++){
-            ans[i]=root.val;
-            root=root.right;
-        }
-        return ans;
-    }
-    public Node insertBetween(Node root,Node in){
-        Node temp=root;
-        if(root.count<in.count){
-            root.left=in;
-            in.right=root;
-            root=in;
-            
-        }
-        else{
-            while(temp.right!=null&&temp.right.count>in.count){
-                temp=temp.right;
-            }
-            if(temp.right==null){
-                temp.right=in;
-                in.left=temp;
-               
-            }
-            else{
-                in.right=temp.right;
-                temp.right.left=in;
-                temp.right=in;
-                in.left=temp;
-                
+
+        // Min-heap based on frequency
+        PriorityQueue<Map.Entry<Integer, Integer>> minHeap =
+            new PriorityQueue<>((a, b) -> a.getValue() - b.getValue());
+
+        for (Map.Entry<Integer, Integer> entry : freqMap.entrySet()) {
+            minHeap.offer(entry);
+            if (minHeap.size() > k) {
+                minHeap.poll();
             }
         }
-        return root;
+
+        int[] result = new int[k];
+        int i = 0;
+        while (!minHeap.isEmpty()) {
+            result[i++] = minHeap.poll().getKey();
+        }
+
+        return result;
     }
 }
