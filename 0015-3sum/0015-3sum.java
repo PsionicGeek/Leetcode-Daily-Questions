@@ -29,10 +29,7 @@ class Solution {
                     while(low<high&&pl==nums[low]){
                         low++;
                     }
-                    int ph=nums[high];
-                    while(high>low&&ph==nums[high]){
-                        high--;
-                    }
+                    
                 }
             }
             int ps=nums[start];
