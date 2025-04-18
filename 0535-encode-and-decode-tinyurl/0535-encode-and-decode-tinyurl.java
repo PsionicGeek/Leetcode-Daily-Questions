@@ -1,19 +1,21 @@
 public class Codec {
 
-    String lU="";
-
-
     // Encodes a URL to a shortened URL.
     public String encode(String longUrl) {
-        lU=longUrl;
-        return "";
-        
+        StringBuilder sb = new StringBuilder();
+        for (char c : longUrl.toCharArray()) {
+            sb.append((char)(c + 1)); // Shift each character by +1
+        }
+        return sb.toString();
     }
 
     // Decodes a shortened URL to its original URL.
     public String decode(String shortUrl) {
-        return lU;
-        
+        StringBuilder sb = new StringBuilder();
+        for (char c : shortUrl.toCharArray()) {
+            sb.append((char)(c - 1)); // Reverse the shift
+        }
+        return sb.toString();
     }
 }
 
